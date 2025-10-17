@@ -372,7 +372,7 @@ async function changeTalent(info)
     console.log(skillName);
     var max = 1;
     
-    var debugString = "Talent change in category: " + skillToCategory(skillName) + "\n" + values.planet_talent_spent + "\n" + planet_select;
+    var debugString = "Talent change in category: " + skillToCategory(skillName) + "\n" + values.planet_talent_spent + "\n" + values.planet_select + "\n";
     
     if (skillToCategory(skillName) == values.planet_select)
         {
@@ -424,7 +424,7 @@ async function changeTalent(info)
                          [skillName + "_talent"]: "" + (prev + delta),
                          ["cc_" + skillName + "_talent"]: "" + (prev + delta)});
                          
-    setSocialSkillSpent(skillToCategory(skillName));
+    setPlanetTalentSpent(values.planet_select);
     
     if (delta != 0)
         {                  
@@ -456,33 +456,33 @@ async function changeTalent(info)
         }
     }
     
-async function setSocialSkillSpent(category)
+async function setPlanetTalentSpent(category)
     {
     var values;
     switch (category)
         {
         case "a":
-            values = await getAttrsAsync(["drive_ground_vehicle", "knowledge_corporate", "knowledge_planets", "knowledge_urban", "pilot_aircraft", "trade"]);
+            values = await getAttrsAsync(["drive_ground_vehicle_talent", "knowledge_corporate_talent", "knowledge_planets_talent", "knowledge_urban_talent", "pilot_aircraft_talent", "trade_talent"]);
         break;
         
         case "b":
-            values = await getAttrsAsync(["convince", "deceive", "empathy", "intimidate", "lead"]);
+            values = await getAttrsAsync(["convince_talent", "deceive_talent", "empathy_talent", "intimidate_talent", "lead_talent"]);
         break;
         
         case "c":
-            values = await getAttrsAsync(["notice", "hack_security", "search", "sleight_of_hand", "sneak"]);
+            values = await getAttrsAsync(["notice_talent", "hack_security_talent", "search_talent", "sleight_of_hand_talent", "sneak_talent"]);
         break;
         
         case "d":
-            values = await getAttrsAsync(["aim", "athletics", "endurance", "melee", "reaction"]);
+            values = await getAttrsAsync(["aim_talent", "athletics_talent", "endurance_talent", "melee_talent", "reaction_talent"]);
         break;
         
         case "e":
-            values = await getAttrsAsync(["astronomy", "computer_science", "medicine", "natural_sciences", "robotics", "weapons_engineering"]);
+            values = await getAttrsAsync(["astronomy_talent", "computer_science_talent", "medicine_talent", "natural_sciences_talent", "robotics_talent", "weapons_engineering_talent"]);
         break;
         
         case "f":
-            values = await getAttrsAsync(["bridge_tech", "vehicle_engineering", "pilot_spacecraft", "mounted_weaponry"]);
+            values = await getAttrsAsync(["bridge_tech_talent", "vehicle_engineering_talent", "pilot_spacecraft_talent", "mounted_weaponry_talent"]);
         break;
         }
     
