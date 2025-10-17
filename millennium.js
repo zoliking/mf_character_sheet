@@ -1154,8 +1154,9 @@ on ("clicked:roll_condition", rollCondition);
 
 async function rollCondition(info)
     {
-    var values = await getAttrsAsync(["pain"]);
-    var modLevel = Number(values["pain"]) / -2;
+    var values = await getAttrsAsync(["hp", "max_hp"]);
+    var hpLevel = Number(values.max_hp)/5;
+    var modLevel = Math.ceil((Number(values.max_hp) - Number(values.hp))/hpLevel);
     
     var rollString = "&{template:hi-assist} {{name=@{name}}} {{title=: Condition: }} {{roll1=[[abs(1d4-1d4) + " + modLevel + "]]}}";
     rerollString = rollString;
@@ -2906,7 +2907,7 @@ async function setPainFromDamage()
 			await setAttrsAsync({"hp": maxHp});
 			}
 			
-		var modGroup = Math.floor((maxHp - hp)/parseFloat(maxHp/5));
+		var modGroup = Math.ceil((maxHp - hp)/parseFloat(maxHp/5));
 		await setAttrsAsync({"pain_from_damage": -2 * modGroup});
 		}
 	}
@@ -2992,14 +2993,15 @@ async function setXP()
 	
 async function setMaxHP()
 	{
-	var values = await getAttrsAsync(["bought_hp", "sta"]);
+	var values = await getAttrsAsync(["bought_hp", "sta", "cc2_prompt_hider", "cc1_prompt_hider"]);
 	
 	let ccMode = values.character_creation_mode == "on";
 	let bought = parseInt(values.bought_hp);
 	let stamina = parseInt(values.sta);
 
 	await setAttrsAsync({"max_hp": (bought * 5 + stamina * 5)});
-	if (ccMode)
+	if (values.cc2_prompt_hider == "0" ||
+	    values.cc1_prompt_hider == "0")
 		{
 		await setAttrsAsync({"hp": (bought * 5 + stamina * 5)});
 		}
