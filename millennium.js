@@ -478,7 +478,7 @@ async function setPlanetTalentSpent(category)
         break;
         
         case "e":
-            values = await getAttrsAsync(["astronomy_talent", "computer_science_talent", "medicine_talent", "natural_sciences_talent", "robotics_talent", "weapons_engineering_talent"]);
+            values = await getAttrsAsync(["astronomy_talent", "computer_science_talent", "medicine_talent", "natural_sciences_talent", "robotics_talent", "weapons_engineering_talent", "xenobiology_talent"]);
         break;
         
         case "f":
@@ -549,6 +549,7 @@ function skillToCategory(skill)
         case "natural_sciences":
         case "robotics":
         case "weapons_engineering":
+        case "xenobiology":
             return "e";
         break;
         
@@ -754,7 +755,7 @@ async function closeCC()
                                  ["repeating_weapons_" + id + "_weapon_volley"]: "0",
                                  ["repeating_weapons_" + id + "_weapon_clip_ammo"]: "1",
                                  ["repeating_weapons_" + id + "_weapon_clip_capacity"]: "1",
-                                 ["repeating_weapons_" + id + "_weapon_ammo"]: "CFB"});
+                                 ["repeating_weapons_" + id + "_weapon_ammo"]: "CFC"});
 	        ccWeapon = arduloM2;
 	        ccArmor = combatPolymerSuit;
 	        ccAmmo = ammoA;
@@ -809,7 +810,7 @@ async function closeCC()
 		break;
 		
 		case "hacker":
-		    await setAttrsAsync({"carried_gear": "1 S.E.A.L., 1 combat com, standard clothes, 1 Focus, jailbroken tablet (software level 6, memory 8, loaded with hacking I, antivirus III and encryption I), 1 piece of real jewelry",
+		    await setAttrsAsync({"carried_gear": "1 S.E.A.L., 1 combat com, standard clothes, 1 Focus, jailbroken tablet (software level 6, memory 8, loaded with hacking I, antivirus III and encryption I)",
 	                             "other_gear": "set of elegant clothing"});
 	        ccWeapon = arduloM2;
 	        ccArmor = combatPolymerSuit;
