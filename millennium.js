@@ -292,7 +292,7 @@ async function setPain()
     await setAttrsAsync({"pain": Math.min(0, wil + pfd + pm)});
     }
 
-on ("clicked:repeating_backgrounds:delete clicked:repeating_weapons:delete clicked:repeating_armor:delete clicked:repeating_ammo:delete clicked:repeating_advantages:delete clicked:repeating_resources:delete", deleteLine);
+on ("clicked:repeating_backgrounds:delete clicked:repeating_weapons:delete clicked:repeating_armor:delete clicked:repeating_ammo:delete clicked:repeating_advantages:delete clicked:repeating_resources:delete clicked:repeating_melees:delete", deleteLine);
 
 async function deleteLine(info)
     {
@@ -497,6 +497,7 @@ async function setPlanetTalentSpent(category)
 		}
     console.log(spent);
         
+
     if (spent)
         {
         await setAttrsAsync({"planet_talent_spent": "1"});
@@ -1445,12 +1446,15 @@ async function openShootPrompt(info)
 	    else
 	    {
 	    delete options[3].disabled;
+	    options[0].selected = false;
 	    delete options[0].selected;
 	    options[3].selected = true;
 	    var values = await getAttrsAsync(["repeating_melees_" + id + "_melee_name"]);
+	    weapon["name"] = values["repeating_melees_" + id + "_melee_name"];
 	    await setAttrsAsync({"firing_text": "Strike with " + values["repeating_melees_" + id + "_melee_name"],
     					  	 "shoot_prompt_hider": 0,
-    					  	 "shoot_hider": 0});
+    					  	 "shoot_hider": 0,
+	                         "firing_mode": "melee"});
     					  	 
 	    populateListOptions({elemSelector: ".firing-mode-select, .firing-mode-selectBlank",
             				 optionsArray: options});
@@ -1871,6 +1875,7 @@ async function skillToName(skill)
 		break;
 		case "melee":
 			return "Melee";
+
 		break;
 		case "reaction":
 			return "Reaction";
@@ -2969,6 +2974,17 @@ async function init()
 	                         "cc_intimidate_talent": 0,
 	                         "cc_lead_talent": 0});
 	    }
+	    
+	await setAttrsAsync({"attribute_prompt_hider": 1,
+	                         "skill_prompt_hider": 1,
+	                         "roll_prompt_hider": 1,
+	                         "attribute_roll_prompt_hider": 1,
+	                         "shoot_prompt_hider": 1,
+	                         "hp_prompt_hider": 1,
+	                         "damage_prompt_hider": 1});
+	                         
+	//var values2 = await getAttrsAsync(["shoot_prompt_hider"]);
+	//console.log("Sheet init complete.\n" + JSON.stringify(values2));
 	}
 	
 function isInteger(value)
@@ -3188,6 +3204,7 @@ async function resetAttributePoints()
             			 "str_cc": 0,
             			 "sta_cc": 0,
             			 "agi_cc": 0,
+
             			 "per_cc": 0,
             			 "cha_cc": 0,
             			 "int_cc": 0,
