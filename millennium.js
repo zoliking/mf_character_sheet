@@ -350,6 +350,8 @@ async function addLine(info)
     var id = generateRowID();
     console.log("repeating_" + info.htmlAttributes.value + "_" + id + "_" + info.htmlAttributes.value + "_generator");
     await setAttrsAsync({["repeating_" + info.htmlAttributes.value + "_" + id + "_" + info.htmlAttributes.value + "_generator"]: "1"});
+    console.log("ID: " + id + "\n");
+    return id;
     }
 
 on ("change:cc_bridge_tech_talent change:cc_mounted_weaponry_talent  change:cc_pilot_spacecraft_talent change:cc_vehicle_engineering_talent change:cc_drive_ground_vehicle_talent change:cc_knowledge_corporate_talent change:cc_knowledge_planets_talent change:cc_knowledge_urban_talent change:cc_pilot_aircraft_talent change:cc_trade_talent change:cc_aim_talent change:cc_athletics_talent change:cc_endurance_talent change:cc_melee_talent change:cc_reaction_talent change:cc_throw_talent change:cc_notice_talent change:cc_hack_security_talent change:cc_search_talent change:cc_sleight_of_hand_talent change:cc_sneak_talent change:cc_astronomy_talent change:cc_computer_science_talent change:cc_medicine_talent change:cc_natural_sciences_talent change:cc_robotics_talent change:cc_weapons_engineering_talent change:cc_xenobiology_talent change:cc_convince_talent change:cc_deceive_talent change:cc_empathy_talent change:cc_intimidate_talent change:cc_lead_talent", changeTalent);
@@ -497,7 +499,6 @@ async function setPlanetTalentSpent(category)
 		}
     console.log(spent);
         
-
     if (spent)
         {
         await setAttrsAsync({"planet_talent_spent": "1"});
@@ -637,12 +638,115 @@ on ("clicked:cc2_complete", closeCC);
 
 async function closeCC()
 	{
-	var values = await getAttrsAsync(["cc_points", "profession_select", "social_class_select"]);
+	var values = await getAttrsAsync(["cc_points", "profession_select", "social_class_select", "territory_select"]);
 	var xpInfo = await getXPData();
     console.log(xpInfo);
 	await setAttrsAsync({"cc2_prompt_hider": 1,
 						 "total_xp": 100 + Number(values.cc_points) * xpInfo.attrCost + xpInfo.ccSkillXp});
 	await setXP();
+	
+	console.log(values);
+	
+	switch (values.territory_select)
+	    {
+	    case "saturnada":
+	        var id = await addLine({"htmlAttributes": {"value": "advantages"}});
+	        console.log("ID: " + id + "\n");
+	        await setAttrsAsync({["repeating_advantages_" + id + "_advantage_name"]: "Creature companion",
+	                             ["repeating_advantages_" + id + "_advantage_cost"]: "0"});
+	        var values2 = await getAttrsAsync(["saturnada_creature"]);
+	        switch (values2.saturnada_creature)
+	            {
+	            case "1":
+	                await setAttryAsync({"notes": "Charge beast: Strength 6, Agility 7, Stamina 5, Perception 4, Intelligence 2, Charisma 2, Willpower 2\nMelee 5, Endurance 4, Reaction 5, DA 1, movement: 2m/AP, 8 AP/turn, 25 HP."});
+	            break;
+	            
+	            case "2":
+	                await setAttryAsync({"notes": "Flixy: A flixy is a companion animal, its statistics varying widely between different individuals."});
+	            break;
+	            
+	            case "3":
+	                await setAttryAsync({"notes": "Terenchar swarm: The swarm’s range is 500m and can transmit information via flying back to the command module. Transmitted information includes layout of the area, number, size and thermal footprint of occupants. The swarm comes with a mechanical hive and a command module."});
+	            break;
+	            }
+	    break;
+	    
+	    case "gt":
+	        var id = await addLine({"htmlAttributes": {"value": "advantages"}});
+	        await setAttrsAsync({["repeating_advantages_" + id + "_advantage_name"]: "Robot companion",
+	                             ["repeating_advantages_" + id + "_advantage_cost"]: "0"});
+	                             
+	        var values2 = await getAttrsAsync(["gt_robot"]);
+	        switch (values2.gt_robot)
+	            {
+	            case "1":
+	                await setAttryAsync({"notes": "Mk 201 Stinger Combat Companion\nHardware: Frame II, Hydraulic Leg *4 configured in a spider pattern, Camera * 2, Armor plating 2, Brain I, Pistol slot II, Battery (8), Head, Shield Generator I (Ballistic)\nSoftware: Pistol aimer I, Targeter I, Remote control managers\nStats: HP: 10 + 20 ballistic shield, DA: 2, +5 Perception, +2 Aim, AP/turn: 6, Speed: 1m/AP"});
+	            break;
+	            
+	            case "2":
+	                await setAttryAsync({"notes": "Mk 17 Scout Companion\nHardware: Frame I, Antigrav drive I, Camera * 2, Infrared Camera, Microphone, Chemical Analyzer, Brain II, Head, Broadband Radio, Battery III\nSoftware: Watcher, Remote control manager, Audio/video recorder, Broadband communicator"});
+	            break;
+	            }
+	    break;
+	    
+	    case "tatsuba":
+	        var id = await addLine({"htmlAttributes": {"value": "advantages"}});
+	        await setAttrsAsync({["repeating_advantages_" + id + "_advantage_name"]: "Combat training",
+	                             ["repeating_advantages_" + id + "_advantage_cost"]: "0"});
+	        var id2 = await addLine({"htmlAttributes": {"value": "advantages"}});
+	        await setAttrsAsync({["repeating_advantages_" + id2 + "_advantage_name"]: "Action Hero",
+	                             ["repeating_advantages_" + id2 + "_advantage_cost"]: "0"});
+	    break;
+	    
+	    case "omkinara":
+	        var id = await addLine({"htmlAttributes": {"value": "advantages"}});
+	        await setAttrsAsync({["repeating_advantages_" + id + "_advantage_name"]: "Talent chip",
+	                             ["repeating_advantages_" + id + "_advantage_cost"]: "0"});
+	    break;
+	    
+	    case "zaidong":
+	        var id = await addLine({"htmlAttributes": "advantages"});
+	        await setAttrsAsync({["repeating_advantages_" + id + "_advantage_name"]: "Augmentation",
+	                             ["repeating_advantages_" + id + "_advantage_cost"]: "0"});
+	                             
+	        var values2 = await getAttrsAsync(["zaidong_augmentation"]);
+	        await setAttryAsync({"notes": values2.zaidong_augmentation});
+
+	    break;
+	    
+	    case "gavadai":
+	        var id = await addLine({"htmlAttributes": {"value": "advantages"}});
+	        await setAttrsAsync({["repeating_advantages_" + id + "_advantage_name"]: "Enhanced attributes",
+	                             ["repeating_advantages_" + id + "_advantage_cost"]: "0"});
+	    break;
+	    
+	    case "syndeel":
+	        var id = await addLine({"htmlAttributes": {"value": "advantages"}});
+	        await setAttrsAsync({["repeating_advantages_" + id + "_advantage_name"]: "Predisposition to cyberware",
+	                             ["repeating_advantages_" + id + "_advantage_cost"]: "0"});
+	        var id2 = await addLine({"htmlAttributes": "advantages"});
+	        await setAttrsAsync({["repeating_advantages_" + id2 + "_advantage_name"]: "Neurocom",
+	                             ["repeating_advantages_" + id2 + "_advantage_cost"]: "0"});
+	    break;
+	    
+	    case "alliance":
+	        var id = await addLine({"htmlAttributes": {"value": "advantages"}});
+	        await setAttrsAsync({["repeating_advantages_" + id + "_advantage_name"]: "Focus",
+	                             ["repeating_advantages_" + id + "_advantage_cost"]: "0"});
+	    break;
+	    
+	    case "imperial":
+	        var id = await addLine({"htmlAttributes": {"value": "advantages"}});
+	        await setAttrsAsync({["repeating_advantages_" + id + "_advantage_name"]: "Battle core",
+	                             ["repeating_advantages_" + id + "_advantage_cost"]: "0"});
+	    break;
+	    
+	    case "pirate":
+	        var id = await addLine({"htmlAttributes": {"value": "advantages"}});
+	        await setAttrsAsync({["repeating_advantages_" + id + "_advantage_name"]: "Space bubble",
+	                             ["repeating_advantages_" + id + "_advantage_cost"]: "0"});
+	    break;
+	    }
 	
 	switch (values.social_class_select)
 	    {
@@ -1875,7 +1979,6 @@ async function skillToName(skill)
 		break;
 		case "melee":
 			return "Melee";
-
 		break;
 		case "reaction":
 			return "Reaction";
@@ -3204,7 +3307,6 @@ async function resetAttributePoints()
             			 "str_cc": 0,
             			 "sta_cc": 0,
             			 "agi_cc": 0,
-
             			 "per_cc": 0,
             			 "cha_cc": 0,
             			 "int_cc": 0,
