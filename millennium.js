@@ -1410,7 +1410,7 @@ async function fireWeapon()
 	console.log(firingMode);
 	if (firingMode != "melee")
 	    {
-    	var shootBonus = 0;
+    	var modeString = "";
     	
     	if (firingMode == "single" && weapon.clip_ammo > 0)
     		{
@@ -1422,17 +1422,17 @@ async function fireWeapon()
     		{
     		await setAttrsAsync({["repeating_weapons_" + weapon.id + "_weapon_clip_ammo"]: weapon.clip_ammo - weapon.burst,
     				  			 "shoot_prompt_hider": 1});
-    		shootBonus = 2;
+    		modeString = "a burst with";
     		}
     		
-    	if (firingMode == "volley" && weapon.volley <= ammo)
+    	if (firingMode == "volley" && weapon.volley <= weapon.clip_ammo)
     		{
     		await setAttrsAsync({["repeating_weapons_" + weapon.id + "_weapon_clip_ammo"]: weapon.clip_ammo - weapon.volley,
     				  			 "shoot_prompt_hider": 1});
-    		shootBonus = 4;
+    		modeString = "a volley with";
     		}
-    		
-    	var rollString = "&{template:hi-roll} {{name=@{name}}} {{title= fires their " + weapon.name + ": }} {{roll1=[[1d12 + @{per} + @{aim} + @{pain} + @{shoot_modifier} + " + shootBonus + "]]}}";
+    	var remainingAmmo = Number(weapon.clip_ammo) - Number(weapon.volley);
+    	var rollString = "&{template:hi-roll} {{name=@{name}}} {{title= fires " + modeString + " their " + weapon.name + " (" + remainingAmmo + "/" + weapon.clip_capacity + "): }} {{roll1=[[1d12 + @{per} + @{aim} + @{pain} + @{shoot_modifier}]]}}";
     	
     	rerollString = rollString;
     	startRoll(rollString, shootCallback);
